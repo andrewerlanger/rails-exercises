@@ -1,0 +1,7 @@
+<%= simple_form_for([cocktail, dose]) do |f| %>
+
+<%= f.association :ingredient, error: false %>
+<%= f.input :description, placeholder: '100 tablespoons...', label: 'Quantity', error: false %>
+<%= f.submit :create, class: 'btn btn-danger center-block' %>
+
+<% end %>

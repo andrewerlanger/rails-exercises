@@ -1,0 +1,17 @@
+<div class="container body-height">
+
+
+
+  <h3 class="text-center">Add ingredient to <strong><%= @cocktail.name %></strong></h3>
+  <div class="ingredient-box">
+    <%= render 'shared/dose_form', cocktail: @cocktail, dose: @dose  %>
+    <% if @dose.errors.any? %>
+    <ul style="margin-top: 20px">
+      <% @dose.errors.full_messages.each do |message| %>
+      <li style="color: red"><%= message %></li>
+      <% end %>
+    </ul>
+    <% end %>
+  </div>
+</div>
+

@@ -1,0 +1,75 @@
+<%= render 'shared/banner' %>
+
+<div class="container text-center">
+  <h2 style="padding-top: 20px; font-weight: 200">FEATURED COCKTAILS</h2>
+  <div class="profile">
+
+     <!-- PATHS -->
+     <% if @cocktails.nil? %>
+       <% path0 = "#" %>
+       <% path1 = "#" %>
+       <% path2 = "#" %>
+       <% path3 = "#" %>
+       <% path4 = "#" %>
+       <% path5 = "#" %>
+     <% else %>
+       <% path0 = "cocktails/#{@cocktails[0].id}" %>
+       <% path1 = "cocktails/#{@cocktails[1].id}" %>
+       <% path2 = "cocktails/#{@cocktails[2].id}" %>
+       <% path3 = "cocktails/#{@cocktails[3].id}" %>
+       <% path4 = "cocktails/#{@cocktails[4].id}" %>
+       <% path5 = "cocktails/#{@cocktails[5].id}" %>
+     <% end %>
+
+     <!-- CARD 1 -->
+     <a href='<%= path0 %>' class="card" id = "main" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.2)),
+         url('<%= cl_image_path @cocktails[0].photo, crop: :fill %>'); background-size: cover; background-position: center; text-decoration: none;">
+      <div class="card-content">
+        <h3> <%= @cocktails[0].name %> </h3>
+      </div>
+    </a>
+
+    <!-- CARD 2 -->
+    <a href='<%= path1 %>' class="card" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.2)),
+         url('<%= cl_image_path @cocktails[1].photo, crop: :fill %>'); background-size: cover; background-position: center; text-decoration: none;">
+      <div class="card-content">
+        <h3> <%= @cocktails[1].name %> </h3>
+      </div>
+    </a>
+
+    <!-- CARD 3 -->
+    <a href='<%= path2 %>' class="card" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.2)),
+         url('<%= cl_image_path @cocktails[2].photo, crop: :fill %>'); background-size: cover; background-position: center; text-decoration: none;">
+      <div class="card-content">
+        <h3> <%= @cocktails[2].name %> </h3>
+      </div>
+    </a>
+
+    <!-- CARD 4 -->
+    <a href='<%= path3 %>' class="card" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.2)),
+         url('<%= cl_image_path @cocktails[3].photo, crop: :fill %>'); background-size: cover; background-position: center; text-decoration: none;">
+      <div class="card-content">
+        <h3> <%= @cocktails[3].name %> </h3>
+      </div>
+    </a>
+
+    <!-- CARD 5 -->
+    <a href='<%= path4 %>' class="card" id="about" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.2)),
+         url('<%= cl_image_path @cocktails[4].photo, crop: :fill %>'); background-size: cover; background-position: center; text-decoration: none;">
+      <div class="card-content">
+        <h3> <%= @cocktails[4].name %> </h3>
+      </div>
+    </a>
+
+    <!-- CARD 6 -->
+    <a href='<%= path5 %>' class="card" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.2)),
+         url('<%= cl_image_path @cocktails[5].photo, crop: :fill %>'); background-size: cover; background-position: center; text-decoration: none;">
+      <div class="card-content">
+        <h3> <%= @cocktails[5].name %> </h3>
+      </div>
+    </a>
+</div>
+<p style="padding: 35px 0">We already have <strong>too many</strong> cocktails. But, if you really want, you can <%= link_to "add another anyway", new_cocktail_path %>.</p>
+</div>
+
+

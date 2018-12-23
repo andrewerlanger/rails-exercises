@@ -1,0 +1,43 @@
+/* TODO: design a CSS grid layout for user dashboard */
+.profile {
+  height: 550px;
+  display: grid;
+  grid-template-columns: 30% repeat(3, 1fr);
+  grid-template-rows: 1fr, 1fr;
+}
+
+#main {
+  grid-column: 1 / span 1;
+  grid-row: 1 / span 2;
+}
+
+#about {
+  grid-column: 2 / span 2;
+  grid-row: 2 / span 1;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin: 10px;
+  color: white;
+}
+
+.card:hover {
+  opacity: 20;
+}
+
+a:hover {
+  text-decoration: none;
+  color: white;
+}
+
+@media(max-width: 900px){
+ .profile {
+  display: block;
+}
+}
