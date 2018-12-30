@@ -3,4 +3,5 @@ Rails.application.routes.draw do
   get root to: 'sessions#new'
   resources :students, only: [:index]
   resources :sessions, only: [:new, :create]
+  resources :lessons, only: [:create, :show]
 end
