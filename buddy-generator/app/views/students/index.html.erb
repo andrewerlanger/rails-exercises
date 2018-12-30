@@ -1,5 +1,5 @@
 <div class="container">
-  <h2>Randomly generated <%= @session.num_students %> student names</h2>
+  <h2>Randomly generated <%= @session.num_students %> students</h2>
   <strong class="text-danger">Here they are:</strong>
 
   <div class="margin-top-bottom-sm">
@@ -13,6 +13,5 @@
   <div class="btn btn-danger">
     <%= "Generate Lesson #{@session.current_lesson}" %>
   </div>
-
-
+  <p><em><%= "You specified #{@session.num_lessons} lessons" %></em></p>
 </div>
