@@ -1,7 +1,9 @@
 class LessonsController < ApplicationController
 
   def show
-
+    @lesson = Lesson.find(params[:id])
+    @session = Session.find(@lesson.session_id)
+    @pairs = Pair.where(lesson_id: @lesson)
   end
 
   def create
@@ -16,46 +18,81 @@ class LessonsController < ApplicationController
     )
 
     # Generate pairs for lesson
-    @pairs = generate_pairs()
+    generate_pairs
 
     # Update + save lesson number in session
-    current_session.current_lesson += 1
-    current_session.save!
+    @session.current_lesson += 1
+    @session.save!
 
     # Redirect to lesson show page
-    redirect_to @lesson
+    redirect_to lesson_path(@lesson)
   end
 
   private
 
-  def generate_pairs()
+  def generate_pairs
 
     # Calcuate number of pairs required
     pairs_required = @session.num_students / 2
     @pairs_found = 0
 
-    # Generate array of active students
-    # @students = Student.where(session_id: @session.id).filter(&:active)
+    # Reset availability status of students
+    reset_student_availability
 
-    # Iterate through students to find match
-    @students.each do |student|
+    # Generate required number of pairs
+    until pairs_required == @pairs_found
 
-      # Skip if student not available
-      next unless student.available
+      # Select next student who needs to be paired
+      student = Student.find_by(session_id: @session.id, active: true, available: true)
 
-      # Set student status to unavailable
+      # Update availability of student
       student.available = false
+      student.save!
 
-      # Attempt to generate pair for student
+      # Generate pair for student
       generate_pair(student)
-
-      # Break when pairs_found == pairs_required
-      break if pairs_found == pairs_required
     end
   end
 
   def generate_pair(student)
-    raise
+
+    # Create array of available buddies
+    available_buddies = Student.where(session_id: @session.id, active: true, available: true)
+
+    # Retrieve buddies that have previously paired with student
+    previous_pairs = Pair.where(student1_id: student)
+                         .or(Pair.where(student2_id: student))
+
+    # Filter these potential buddies out of available buddies
+    previous_pairs.each do |pair|
+      if pair.student1_id == student.id
+        available_buddies = available_buddies.where.not(id: pair.student2_id)
+      else
+        available_buddies = available_buddies.where.not(id: pair.student1_id)
+      end
+    end
+
+    # Select potential buddy at random
+    buddy = available_buddies.sample
+
+    # Create new pair between student and buddy
+    Pair.create!(student1_id: student.id,
+                 student2_id: buddy.id,
+                 lesson_id: @lesson.id)
+
+    # Update @pairs_found
+    @pairs_found += 1
+
+    # Update availability of student and buddy
+    buddy.available = false
+    buddy.save!
   end
 
+  def reset_student_availability
+    students = Student.where(session_id: @session.id, active: true)
+    students.each do |student|
+      student.available = true
+      student.save!
+    end
+  end
 end

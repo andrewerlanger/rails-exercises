@@ -5,7 +5,7 @@
   <div class="margin-top-bottom-sm">
     <% @students.each_with_index do |student, index| %>
       <% unless student.alone %>
-        <p><%= "#{index + 1}. #{student.name}" %></p>
+        <p><%= "#{index}. #{student.name}" %></p>
       <% end %>
     <% end %>
   </div>
