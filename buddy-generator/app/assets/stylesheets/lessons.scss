@@ -1,3 +1,16 @@
 // Place all the styles related to the lessons controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+.buttons {
+  display: flex;
+  justify-content: center;
+}
+
+.disabled-button {
+  background: #888888;
+  cursor: not-allowed;
+}
+
+.button-margin {
+  margin: 20px;
+}

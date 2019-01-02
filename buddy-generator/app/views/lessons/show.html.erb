@@ -17,13 +17,37 @@
         </table>
         <br>
         <div class="buttons">
-          <% unless @session.current_lesson > @session.num_lessons %>
-            <div class="btn btn-danger" type="submit">
-              <%= link_to "Generate Lesson #{@session.current_lesson}",
-                  lessons_path(session: @session),
-                  method: :post %>
+
+          <!-- Previous lesson -->
+          <% previous_lesson = @lesson.lesson_num - 1 %>
+          <% unless @lesson.lesson_num == 1 %>
+            <div class="btn btn-danger button-margin" type="submit">
+
+              <%= link_to "Lesson #{previous_lesson}",
+                  lesson_path(@session.id, previous_lesson) %>
             </div>
           <% end %>
+
+          <!-- Next lesson -->
+          <% next_lesson = @lesson.lesson_num + 1 %>
+          <% unless @lesson.lesson_num == @session.num_lessons %>
+
+            <!-- If lesson needs to be generated -->
+            <% if @session.current_lesson == next_lesson %>
+              <div class="btn btn-danger button-margin" type="submit">
+                <%= link_to "Lesson #{next_lesson}",
+                    lessons_path, method: :post %>
+              </div>
+
+            <!-- If lesson has already been generated -->
+            <% else %>
+              <div class="btn btn-danger button-margin" type="submit">
+                <%= link_to "Lesson #{next_lesson}",
+                    lesson_path(@session.id, next_lesson) %>
+              </div>
+            <% end %>
+          <% end %>
+
         </div>
       </div>
     </div>

@@ -3,17 +3,18 @@
   <strong class="text-danger">Here they are:</strong>
 
   <div class="margin-top-bottom-sm">
-    <% @students.each_with_index do |student, index| %>
+    <% counter = 0 %>
+    <% @students.each do |student| %>
+      <% counter += 1 %>
       <% unless student.alone %>
-        <p><%= "#{index}. #{student.name}" %></p>
+        <p><%= "#{counter}. #{student.name}" %></p>
       <% end %>
     <% end %>
   </div>
 
   <div class="btn btn-danger" type="submit">
     <%= link_to "Generate Lesson #{@session.current_lesson}",
-        lessons_path(session: @session),
-        method: :post %>
+        lessons_path, method: :post %>
   </div>
   <p><em><%= "You specified #{@session.num_lessons} lessons" %></em></p>
 </div>

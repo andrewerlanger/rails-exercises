@@ -4,11 +4,11 @@
     <div class="margin-top-bottom">
       <div class="col-md-4 col-md-offset-4">
         <%= simple_form_for(@session) do |f| %>
-        <%= f.label 'number of students' %>
-        <%= f.input :num_students, label: false %>
-        <%= f.label 'number of lessons' %>
-        <%= f.input :num_lessons, label: false %>
-        <%= f.submit :start, class: 'btn btn-danger' %>
+          <%= f.label 'number of students' %>
+          <%= f.input :num_students, label: false %>
+          <%= f.label 'number of lessons' %>
+          <%= f.input :num_lessons, label: false %>
+          <%= f.submit :start, class: 'btn btn-danger' %>
         <% end %>
       </div>
     </div>

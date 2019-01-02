@@ -10,7 +10,7 @@ class SessionsController < ApplicationController
     @session = Session.new(session_params)
     if @session.save!
       create_students
-      redirect_to students_path(session: @session.id)
+      redirect_to students_path(@session.id)
     else
       render 'new'
     end

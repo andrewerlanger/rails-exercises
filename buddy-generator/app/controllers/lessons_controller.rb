@@ -1,14 +1,15 @@
 class LessonsController < ApplicationController
 
   def show
-    @lesson = Lesson.find(params[:id])
-    @session = Session.find(@lesson.session_id)
+    @session = Session.find(params[:session_id])
+    @lesson = Lesson.find_by(session_id: @session,
+                             lesson_num: params[:lesson_number])
     @pairs = Pair.where(lesson_id: @lesson)
   end
 
   def create
     # Initialize key variables
-    @session = Session.find(params[:session])
+    @session = Session.find(params[:session_id])
     current_lesson = @session.current_lesson
 
     # Create new lesson for session
@@ -25,22 +26,22 @@ class LessonsController < ApplicationController
     @session.save!
 
     # Redirect to lesson show page
-    redirect_to lesson_path(@lesson)
+    redirect_to lesson_path(params[:session_id], @lesson.lesson_num)
   end
 
   private
 
   def generate_pairs
 
-    # Calcuate number of pairs required
+    # Calcuate number of pairs required per lesson
     pairs_required = @session.num_students / 2
     @pairs_found = 0
 
-    # Reset availability status of students
+    # Reset availability status of all students
     reset_student_availability
 
     # Generate required number of pairs
-    until pairs_required == @pairs_found
+    until @pairs_found == pairs_required
 
       # Select next student who needs to be paired
       student = Student.find_by(session_id: @session.id, active: true, available: true)
@@ -75,6 +76,14 @@ class LessonsController < ApplicationController
     # Select potential buddy at random
     buddy = available_buddies.sample
 
+    # Undo previous pairing if no student can be found now
+    if buddy.nil?
+      student.available = true
+      student.save!
+      undo_previous_pair
+      return nil
+    end
+
     # Create new pair between student and buddy
     Pair.create!(student1_id: student.id,
                  student2_id: buddy.id,
@@ -94,5 +103,17 @@ class LessonsController < ApplicationController
       student.available = true
       student.save!
     end
+  end
+
+  def undo_previous_pair
+    previous_pair = Pair.last
+    student1 = Student.find(previous_pair.student1_id)
+    student2 = Student.find(previous_pair.student2_id)
+    student1.available = true
+    student2.available = true
+    student1.save!
+    student2.save!
+    Pair.destroy(previous_pair.id)
+    @pairs_found -= 1
   end
 end
